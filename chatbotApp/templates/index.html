@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- user query print -->
+{% if query %}
+
+    <h3>Question: {{query}}</h3>
+    <br>
+{%endif%}
+<!-- chat response card -->
+<div class="card">
+    <div class="card-header">
+      Chat Response
+    </div>
+    <div class="card-body">
+
+        {% if response %}
+            {{past_responses |safe}} <!--past_responses contain presnt and new responses-->
+        {% endif %}
+    </div>
+  </div>
+<br>
+<br>
+
+<!--if there are past responses it will load this-->
+{% if past_responses %}
+<form method="POST" action="{%url 'home'%}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <input type="hidden" name="past_responses", value="{{past_responses}}">
+    </div>
+    <div class="mb-3">
+      <input type="text" class="form-control" name="query" placeholder="Enter you query here">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+  </form>
+
+
+{% else %}
+<!-- USER form for query -->
+<!--if there are no any responses means it's new-->
+<form method="POST" action="{%url 'home'%}">
+    {% csrf_token %}
+    <div class="mb-3">
+        <input type="hidden" name="past_responses", value="{{41elder41}}">
+    </div>
+    <div class="mb-3">
+      <input type="text" class="form-control" name="query" placeholder="Enter you query here">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+  </form>
+
+{% endif %}
+{% endblock %}

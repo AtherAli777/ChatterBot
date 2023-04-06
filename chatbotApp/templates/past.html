@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Question & Answer</h2>
+<hr>
+
+<!-- Display the table of past questions and answers -->
+<table class="table">
+
+    {% if past %}
+
+    <!-- Loop over each past question and answer -->
+    {% for q in pages %}
+
+    <!-- Display the question and answer -->
+    <tr class="table table-striped">
+        <td><strong>Q: {{ q.question }} </strong></td>
+        <td>A: {{ q.answer }}</td>
+
+        <!-- Add a button to delete the question and answer -->
+        <td><a href="{% url 'delete' q.id %}" class="btn btn-outline-info btn-sm">Delete</a></td>
+    </tr>
+
+    {% endfor %}
+
+    {% endif %}
+
+</table>
+
+
+<!-- Display the pagination links -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+
+        <!-- Add a link to the first page -->
+        <li class="page-item"><a class="page-link" href="?page=1">&laquo; First</a></li>
+
+        {% if pages.has_previous %}
+
+            <!-- Add a link to the previous page -->
+            <li class="page-item"><a class="page-link" href="?page={{ pages.previous_page_number }}">Previous</a></li>
+
+        {% endif %}
+
+        <!-- Loop over each page number and add a link -->
+        {% for i in nums %}
+            <!-- we are using forloop counter because to forloop counter multiples the character -->
+            <li class="page-item"><a class="page-link" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a></li>
+        {% endfor %}
+
+        {% if pages.has_next %}
+
+            <!-- Add a link to the next page -->
+            <li class="page-item"><a class="page-link" href="?page={{ pages.next_page_number }}">Next</a></li>
+
+            <!-- Add a link to the last page -->
+            <li class="page-item"><a class="page-link" href="?page={{ pages.paginator.num_pages }}">Last &raquo;</a></li>
+
+        {% endif %}
+
+    </ul>
+</nav>
+
+
+
+{% endblock %}
